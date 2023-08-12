@@ -10,9 +10,9 @@ pipeline {
         string(name: 'AWS_SECRET_ACCESS_KEY', defaultValue: '', description: 'AWS Secret Access Key')
     }
     environment {
-        AWS_DEFAULT_REGION = params.AWS_REGION
-        AWS_ACCESS_KEY_ID = params.AWS_ACCESS_KEY_ID
-        AWS_SECRET_ACCESS_KEY = params.AWS_SECRET_ACCESS_KEY
+        AWS_DEFAULT_REGION = 'params.AWS_REGION'
+        AWS_ACCESS_KEY_ID = 'params.AWS_ACCESS_KEY_ID'
+        AWS_SECRET_ACCESS_KEY = 'params.AWS_SECRET_ACCESS_KEY'
         PACKER_VERSION = '1.7.4'
         AWS_CLI_VERSION = '2.3.4'
     }
