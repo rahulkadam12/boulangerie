@@ -23,10 +23,10 @@ pipeline {
                 script {
                     // Install Packer
                     sh "sudo yum install unzip -y"
-                    sh "wget https://releases.hashicorp.com/packer/${env.PACKER_VERSION}/packer_${env.PACKER_VERSION}_linux_amd64.zip"
+                    sh "wget curl -o packer.zip https://releases.hashicorp.com/packer/1.7.4/packer_1.7.4_linux_amd64.zip"
                     sh "unzip packer.zip"
                     sh "mv packer /usr/local/bin/"
-                    sh "rm packer_${env.PACKER_VERSION}_linux_amd64.zip"
+                    sh "rm packer.zip"
                     
                     // Install AWS CLI v2
                     sh "curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${env.AWS_CLI_VERSION}.zip' -o 'awscliv2.zip'"
