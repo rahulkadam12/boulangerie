@@ -1,0 +1,8 @@
+---
+
+- hosts: localhost
+  remote_user: ec2-user
+  tasks:
+    - name: Include RHEL-CIS role
+      include_role:
+        name: RHEL-CIS

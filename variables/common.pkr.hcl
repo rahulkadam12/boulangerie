@@ -1,0 +1,1 @@
+# Common vars for cloud and on Prem

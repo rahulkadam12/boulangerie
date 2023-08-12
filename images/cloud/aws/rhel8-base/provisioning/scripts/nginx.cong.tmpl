@@ -1,0 +1,91 @@
+events {
+}
+
+http {
+    server_names_hash_max_size 1024;
+    server_names_hash_bucket_size 128;
+
+    ## do not expose version:
+    server_tokens off;
+
+    proxy_read_timeout 600;
+    proxy_connect_timeout 600;
+    proxy_send_timeout 600;
+
+    upstream jenkins {
+      server 127.0.0.1:8080 fail_timeout=0;
+    }
+
+    # For letsencrypt certs
+    server {
+        ## will work for any not defined host
+        server_name "";
+        listen 80;
+
+        location ^~ /.well-known/acme-challenge/ {
+            default_type "text/plain";
+            allow all;
+            root /opt/acme-challenge;
+            ## search for file, if not found -- close connection
+            try_files $uri =444;
+        }
+
+        ## close connection for all HTTP requests with not our defined "Host:" header
+        ## no sense to redirect to HTTPS -- it is not present yet, or it is wrong host.
+        location / {
+            return 444;
+        }
+    }
+
+    server {
+        listen 80;
+        server_name #NGINX_SERVER_NAME#;
+        return 301 https://$host$request_uri;
+        location / {
+            proxy_set_header        Host $host:$server_port;
+            proxy_set_header        X-Real-IP $remote_addr;
+            proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header        X-Forwarded-Proto $scheme;
+            proxy_redirect          http:// https://;
+            proxy_pass              http://jenkins;
+            # Required for new HTTP-based CLI
+            proxy_http_version      1.1;
+            proxy_request_buffering off;
+            # Required for HTTP-based CLI to work over SSL
+            proxy_buffering         off;
+            # workaround for https://issues.jenkins-ci.org/browse/JENKINS-45651
+            #add_header              'X-SSH-Endpoint' '#NGINX_SERVER_NAME#:50022' always;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name #NGINX_SERVER_NAME#;
+
+        ssl_certificate /etc/nginx/ssl/server.crt;
+        ssl_certificate_key /etc/nginx/ssl/server.key;
+
+        location / {
+            proxy_set_header        Host $host:$server_port;
+            proxy_set_header        X-Real-IP $remote_addr;
+            proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header        X-Forwarded-Proto $scheme;
+            proxy_redirect          http:// https://;
+            proxy_pass              http://jenkins;
+            # Required for new HTTP-based CLI
+            proxy_http_version      1.1;
+            proxy_request_buffering off;
+            # Required for HTTP-based CLI to work over SSL
+            proxy_buffering         off;
+            # workaround for https://issues.jenkins-ci.org/browse/JENKINS-45651
+            #add_header              'X-SSH-Endpoint' '#NGINX_SERVER_NAME#:50022' always;
+        }
+    }
+
+    ## buffer logs before writing to disk -- save IOPS:
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" ' '$status $body_bytes_sent "$http_referer" ' '"$http_user_agent" "$http_x_forwarded_for" "$host"';
+
+    access_log /var/log/nginx/default_access.log main buffer=16k;
+
+    error_log /var/log/nginx/default_error.log;
+}
