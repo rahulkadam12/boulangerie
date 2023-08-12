@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     def packerCmd = "packer build -var 'aws_access_key=${params.AWS_ACCESS_KEY}' -var 'aws_secret_key=${params.AWS_SECRET_KEY}' images/cloud/aws/rhel8-base/packer.pkr.hcl"
-                    def amiId = sh(script: packerCmd + " | tee /dev/tty | grep 'amazon-ebs: AMI:' | awk '{print $5}'", returnStdout: true).trim()
+                    def amiId = packerBuild.split('artifact,')[1].split(',')[2]
                     echo "AMI ID: $amiId"
                 }
             }
