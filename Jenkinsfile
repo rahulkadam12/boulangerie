@@ -47,7 +47,7 @@ pipeline {
         stage('Build AMI') {
             steps {
                 script {
-                    sh "packer build -var 'aws_access_key=${params.AWS_ACCESS_KEY}' -var 'aws_secret_key=${params.AWS_SECRET_KEY}' images/cloud/aws/rhel8-base/packer.pkr.hcl | tee /dev/tty | grep 'amazon-ebs: AMI:' | awk '{print \$5}' | xargs echo 'AMI ID:'"
+                    sh "packer build -var 'aws_access_key=${params.AWS_ACCESS_KEY}' -var 'aws_secret_key=${params.AWS_SECRET_KEY}' images/cloud/aws/rhel8-base/packer.pkr.hcl"
                 }
             }
         } 
