@@ -22,7 +22,6 @@ pipeline {
             steps {
                 script {
                     // Install Packer
-                    sh "sudo yum install unzip -y"
                     sh "wget curl -o packer.zip https://releases.hashicorp.com/packer/1.7.4/packer_1.7.4_linux_amd64.zip"
                     sh "unzip packer.zip"
                     sh "mv packer /usr/local/bin/"
