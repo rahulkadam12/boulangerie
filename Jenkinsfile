@@ -23,7 +23,7 @@ pipeline {
                 script {
                     // Install Packer
                     sh "curl -o packer.zip https://releases.hashicorp.com/packer/1.7.4/packer_1.7.4_linux_amd64.zip"
-                    sh "unzip packer.zip"
+                    sh "unzip -o packer.zip"
                     sh "mv packer /usr/local/bin/"
                     sh "rm packer.zip"
                     
