@@ -1,7 +1,7 @@
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
-builder "amazon-ebs" {
+build "amazon-ebs" {
   type          = "amazon-ebs"
   access_key    = var.aws_access_key
   secret_key    = var.aws_secret_key
