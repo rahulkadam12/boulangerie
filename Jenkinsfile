@@ -26,6 +26,7 @@ pipeline {
                     sh "unzip -o packer.zip"
                     sh "sudo mv packer /usr/local/bin/"
                     sh "rm packer.zip"
+                    sh "packer --version"
                     
                     // Install AWS CLI v2
                     sh "curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${env.AWS_CLI_VERSION}.zip' -o 'awscliv2.zip'"
@@ -47,7 +48,7 @@ pipeline {
         stage('Build AMI') {
             steps {
                 script {
-                    sh "packer build -var '{env.AWS_ACCESS_KEY_ID}' -var '{env.AWS_SECRET_ACCESS_KEY}' images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl"
+                    sh "packer build 'aws_access_key=${env.AWS_ACCESS_KEY_ID}' -var 'aws_secret_key=${env.AWS_SECRET_ACCESS_KEY}' images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl"
                 }
             }
         } 
