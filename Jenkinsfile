@@ -47,7 +47,7 @@ pipeline {
         stage('Build AMI') {
             steps {
                 script {
-                    sh "packer build images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl"
+                    sh "packer build -var '{env.AWS_ACCESS_KEY_ID}' -var '{env.AWS_SECRET_ACCESS_KEY}' images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl"
                 }
             }
         } 
