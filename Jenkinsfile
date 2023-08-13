@@ -9,8 +9,8 @@ pipeline {
     }
     environment {
         AWS_DEFAULT_REGION = 'params.AWS_REGION'
-        AWS_ACCESS_KEY_ID = credentials('Access Key ID')
-        AWS_SECRET_ACCESS_KEY = credentials('Secret Access Key')
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_ACCESS')
         PACKER_VERSION = '1.7.4'
         AWS_CLI_VERSION = '2.3.4'
     }
