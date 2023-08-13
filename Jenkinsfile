@@ -47,7 +47,7 @@ pipeline {
         stage('Build AMI') {
             steps {
                 script {
-                    sh "packer validate images/cloud/aws/rhel8-base/provisioning . \
+                    sh "packer validate images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl \
                         packer build images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl"
                 }
             }
