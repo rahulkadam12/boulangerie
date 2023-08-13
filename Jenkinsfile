@@ -9,8 +9,7 @@ pipeline {
     }
     environment {
         AWS_DEFAULT_REGION = 'params.AWS_REGION'
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_ACCESS')
+        AWS_CREDENTIALS = credentials('AWS_ACCESS')
         PACKER_VERSION = '1.7.4'
         AWS_CLI_VERSION = '2.3.4'
     }
@@ -46,7 +45,16 @@ pipeline {
         stage('Build AMI') {
             steps {
                 script {
-                    sh "packer build -var 'aws_access_key=${AWS_ACCESS_KEY_ID}' -var 'aws_secret_key=${AWS_SECRET_ACCESS_KEY}' images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl"
+                    def packerTemplate = 'images/cloud/aws/rhel8-base/provisioning/packer.pkr.hcl'
+
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'your-aws-credentials-id',
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ]]) {
+                        sh "packer build -var 'aws_access_key=${AWS_ACCESS_KEY_ID}' -var 'aws_secret_key=${AWS_SECRET_ACCESS_KEY}' ${packerTemplate}"
+                    }
                 }
             }
         } 
