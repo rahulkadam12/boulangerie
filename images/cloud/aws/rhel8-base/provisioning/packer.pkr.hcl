@@ -26,10 +26,10 @@ build {
     source      = "${path.root}/provisioning/scripts/nginx.conf.tmpl"
   }
 
-  provisioner "shell" {
+  provisioner "remote=execute" {
   inline = [
     "sudo chmod +x /tmp/jenkins_install.sh",  # Make the script executable (if needed)
-    "sudo .tmp/jenkins_install.sh",
+    "sudo /tmp/jenkins_install.sh",
     "sudo jenkins --version"
   ] }
 
