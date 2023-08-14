@@ -16,11 +16,17 @@ source "amazon-ebs" "vm" {
 build {
   sources = ["source.amazon-ebs.vm"]
   
+  provisioner "file" {
+    destination = "/tmp/jenkins_install.sh"
+    source      = "${path.root}/provisioning/scripts/install.sh"
+  }
+
+  provisioner "file" {
+    destination = "/tmp/nginx.conf"
+    source      = "${path.root}/provisioning/scripts/nginx.conf.tmpl"
+  }
+
   provisioner "shell" {
-    inline = [
-    "echo 'Shell script executed after provisioning'",
-    "AMI_ID=$(ec2-metadata -i | cut -d ' ' -f 2)",
-    "echo 'AMI ID: $AMI_ID' > ami_id.txt"
-    ]
+    inline = ["sudo chmod 755 /tmp/jenkins_install.sh", "echo ${var.jenkins_version}", "sudo jenkins_version=${var.jenkins_version} /tmp/jenkins_install.sh"]
   }
 }
