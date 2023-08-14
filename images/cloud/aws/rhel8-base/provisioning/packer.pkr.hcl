@@ -9,8 +9,8 @@ source "amazon-ebs" "vm" {
   region          = "us-east-1"
   source_ami      = "ami-0a84d0474804020fe"
   ssh_username    = "ec2-user"
-  subnet_id       = "subnet-392cc418"
-  vpc_id          = "vpc-46a59b3c"
+  subnet_id       = "subnet-0e466ce5813dedaec"
+  vpc_id          = "vpc-00f81ded507c54218"
 }
   
 build {
