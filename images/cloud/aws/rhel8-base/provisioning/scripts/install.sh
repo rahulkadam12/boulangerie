@@ -8,7 +8,7 @@ java --version
 
 # Install wget, unzip, git, awscli, nginx
 
-yum install -y wget unzip git awscli nginx
+yum install -y wget
 yum install -y unzip
 yum install -y git
 yum install -y awscli
