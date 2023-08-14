@@ -27,6 +27,11 @@ build {
   }
 
   provisioner "shell" {
-    inline = ["sudo chmod 755 /tmp/jenkins_install.sh", "echo ${var.jenkins_version}", "sudo jenkins_version=${var.jenkins_version} /tmp/jenkins_install.sh"]
-  }
+  inline = [
+    "sudo chmod +x /tmp/jenkins_install.sh",  # Make the script executable (if needed)
+    "sudo .tmp/jenkins_install.sh"
+    "sudo jenkins --version"
+  ] }
+
 }
+ 
