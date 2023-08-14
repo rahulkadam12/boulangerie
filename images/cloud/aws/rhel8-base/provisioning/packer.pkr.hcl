@@ -16,19 +16,11 @@ source "amazon-ebs" "vm" {
 build {
   sources = ["source.amazon-ebs.vm"]
   
-  provisioner "file" {
-    destination = "/tmp/jenkins_install.sh"
-    source      = "../images/cloud/aws/rhel8-base/provisioning/scripts/install.sh"
-  }
-
-  provisioner "file" {
-    destination = "/tmp/nginx.conf"
-    source      = "../images/cloud/aws/rhel8-base/provisioning/scripts/nginx.conf.tmpl"
-  }
-
   provisioner "shell" {
     inline = [
-    "sudo chmod +x /tmp/jenkins_install.sh",  # Make the script executable (if needed)
+    "cp /home/ec2-user/workspace/aws-image-builder/images/cloud/aws/rhel8-base/provisioning/scripts/install.sh /tmp/jenkins_install.sh",
+    "cp /home/ec2-user/workspace/aws-image-builder/images/cloud/aws/rhel8-base/provisioning/scripts/nginx.conf.tmpl /tmp/nginx.conf",
+    "sudo chmod +x /tmp/jenkins_install.sh",
     "sudo /tmp/jenkins_install.sh",
     "sudo jenkins --version"
     ] 
