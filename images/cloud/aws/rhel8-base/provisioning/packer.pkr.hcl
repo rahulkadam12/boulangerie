@@ -18,7 +18,7 @@ build {
   
   provisioner "file" {
     destination = "/tmp/jenkins_install.sh"
-    source      = "/images/cloud/aws/rhel8-base/provisioning/provisioning/scripts/install.sh"
+    source      = "${path.root}/images/cloud/aws/rhel8-base/provisioning/provisioning/scripts/install.sh"
   }
 
   provisioner "file" {
