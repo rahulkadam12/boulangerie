@@ -1,12 +1,9 @@
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
-variable "ami_name_suffix" {
-  default = timestamp()
-}
 
 source "amazon-ebs" "vm" {
   ami_description = "A RHEL8 AMI for jenkins-master."
-  ami_name        = "jenkins-master-${var.ami_name_suffix}"
+  ami_name        = "jenkins-master-${timestamp()}"
   ami_regions     = ["us-east-1"]
   instance_type   = "t2.micro"
   region          = "us-east-1"
