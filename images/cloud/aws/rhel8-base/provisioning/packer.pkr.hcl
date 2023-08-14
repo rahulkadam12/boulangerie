@@ -29,7 +29,7 @@ build {
   provisioner "shell" {
   inline = [
     "sudo chmod +x /tmp/jenkins_install.sh",  # Make the script executable (if needed)
-    "sudo .tmp/jenkins_install.sh"
+    "sudo .tmp/jenkins_install.sh",
     "sudo jenkins --version"
   ] }
 
