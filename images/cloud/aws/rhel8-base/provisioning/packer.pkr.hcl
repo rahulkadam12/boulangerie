@@ -18,12 +18,12 @@ build {
   
   provisioner "file" {
     destination = "/tmp/jenkins_install.sh"
-    source      = "/images/cloud/aws/rhel8-base/provisioning/scripts/install.sh"
+    source      = "../images/cloud/aws/rhel8-base/provisioning/scripts/install.sh"
   }
 
   provisioner "file" {
     destination = "/tmp/nginx.conf"
-    source      = "/images/cloud/aws/rhel8-base/provisioning/scripts/nginx.conf.tmpl"
+    source      = "../images/cloud/aws/rhel8-base/provisioning/scripts/nginx.conf.tmpl"
   }
 
   provisioner "shell" {
