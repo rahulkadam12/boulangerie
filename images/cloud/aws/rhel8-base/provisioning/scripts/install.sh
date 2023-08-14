@@ -7,7 +7,12 @@ yum install -y java-11-openjdk-devel
 java --version
 
 # Install wget, unzip, git, awscli, nginx
+
 yum install -y wget unzip git awscli nginx
+yum install -y unzip
+yum install -y git
+yum install -y awscli
+yum install -y nginx
 
 rpm -Uvh https://yum.puppet.com/puppet-tools-release-el-8.noarch.rpm
 yum install -y pdk
