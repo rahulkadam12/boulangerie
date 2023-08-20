@@ -10,6 +10,7 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'params.AWS_REGION'
         AWS_CREDENTIALS = credentials('AWS_ACCESS')
+        GITHUB_CREDENTIALS = credentials('GitHub_token')
         PACKER_VERSION = '1.7.4'
         AWS_CLI_VERSION = '2.3.4'
     }
@@ -53,7 +54,7 @@ pipeline {
                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                     ]]) {
-                        sh "packer build -var 'aws_access_key=${AWS_ACCESS_KEY_ID}' -var 'aws_secret_key=${AWS_SECRET_ACCESS_KEY}' ${packerTemplate}"
+                        sh "packer build -var 'aws_access_key=${AWS_ACCESS_KEY_ID}' -var 'aws_secret_key=${AWS_SECRET_ACCESS_KEY}' -var 'github_token=${GITHUB_CREDENTIALS}' ${packerTemplate}"
                     }
                 }
             }

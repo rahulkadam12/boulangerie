@@ -17,12 +17,42 @@ build {
   sources = ["source.amazon-ebs.vm"]
 
   provisioner "file" {
-  source      = "/home/ec2-user/workspace/aws-image-builder/images/cloud/aws/rhel8-base/provisioning/scripts/install.sh"  # Update the path accordingly
+  source      = "$WORKSPACE/images/cloud/aws/rhel8-base/provisioning/scripts/post_ansible_provisioning.sh"  # Update the path accordingly
+  destination = "/tmp/post_ansible_provisioning.sh"
+  }
+
+  provisioner "file" {
+  source      = "$WORKSPACE/images/cloud/aws/rhel8-base/provisioning/scripts/pre_ansible_provisioning.sh"  # Update the path accordingly
+  destination = "/tmp/pre_ansible_provisioning.sh"
+  }
+
+  provisioner "shell" {
+    environment_vars = ["git_user=${var.git_user}", "git_pass=${var.git_pass}"]
+    inline = [
+    "sudo chmod +x /tmp/pre_ansible_provisioning.sh",
+    "sudo /tmp/pre_ansible_provisioning.sh",
+    ] 
+  }
+ 
+  provisioner "ansible-local" {
+    command       = "ANSIBLE_NOCOLOR=True ansible-playbook"
+    playbook_file = "${path.root}/provisioning/ansible/hardening_cis.yml"
+  }
+
+  provisioner "shell" {
+    inline = [
+    "sudo chmod +x /tmp/post_ansible_provisioning.sh",
+    "sudo /tmp/post_ansible_provisioning.sh",
+    ] 
+  }
+
+  provisioner "file" {
+  source      = "$WORKSPACE/images/cloud/aws/rhel8-base/provisioning/scripts/install.sh"  # Update the path accordingly
   destination = "/tmp/jenkins_install.sh"
   }
   
   provisioner "file" {
-  source      = "/home/ec2-user/workspace/aws-image-builder/images/cloud/aws/rhel8-base/provisioning/scripts/nginx.conf.tmpl"  # Update the path accordingly
+  source      = "$WORKSPACE/images/cloud/aws/rhel8-base/provisioning/scripts/nginx.conf.tmpl"  # Update the path accordingly
   destination = "/tmp/nginx.conf"
   }
 
